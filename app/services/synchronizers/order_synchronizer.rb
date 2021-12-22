@@ -1,7 +1,7 @@
 module Synchronizers
-  class ProductsSynchronizer < BaseSynchronizer
+  class OrdersSynchronizer < BaseSynchronizer
 
-    self.serializer_class_name = "::Synchronizers::ProductSerializer"
+    self.serializer_class_name = "::Synchronizers::OrderSerializer"
 
     def call
       data = get_data_kiotviet
@@ -22,11 +22,11 @@ module Synchronizers
     end
 
     def get_data_kiot_path
-      "#{ENV['KIOTVIET_API_ENDPOINT']}/Products"
+      "#{ENV['KIOTVIET_API_ENDPOINT']}/invoices"
     end
 
     def path
-      "/#{ENV['FLEXZEN_API_PRODUCTS']}"
+      "/#{ENV['FLEXZEN_API_ORDERS']}"
     end
   end
 end

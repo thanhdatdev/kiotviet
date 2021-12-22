@@ -75,3 +75,4 @@ end
 gem 'http'
 gem "httparty"
 gem 'jsonapi-serializer'
+gem 'cssbundling-rails'

@@ -79,6 +79,8 @@ GEM
     childprocess (4.1.0)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
+    cssbundling-rails (1.0.0)
+      railties (>= 6.0.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
@@ -219,6 +221,7 @@ DEPENDENCIES
   bootsnap
   byebug
   capybara
+  cssbundling-rails
   dotenv-rails
   http
   httparty

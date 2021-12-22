@@ -1,13 +1,14 @@
 module Synchronizers
   class Flexzen
-    def self.request(method, path, headers: nil, body: nil, return_errors: false)
+    def self.request(method, path, body: nil, return_errors: false)
       url = url(path)
       args = [method.to_sym, url]
       args << { json: body } if body
       response = HTTP.request(*args)
       response_hash = response.body.present? ? JSON.parse(response.body.to_s) : { status: response.code }
+      byebug
       unless (200..299).cover?(response.code)
-        return Error.new(
+        return Synchronizers::Error.new(
           request_method: method,
           request_url: url,
           request_body: body,
@@ -20,21 +21,14 @@ module Synchronizers
 
       response_hash
     rescue JSON::ParserError => e
-      return Error.new(request_method: method, request_url: url, request_body: body,
+      return Synchronizers::Error.new(request_method: method, request_url: url, request_body: body,
                       status: response.status, detail: "JSON::ParserError #{e}",
                       response_body: response.body.to_s).tap { |error| raise error unless return_errors }
     end
-    def headers_config
-      {
-        "Retailer": "Fascom",
-        "Authorization": "Bearer" + " " + "#{ENV['ACCESS_TOKEN']}",
-        'Accept-Encoding' => ''
-      }
-    end
 
-    def self.api_request(method, path, headers: nil, body: nil, return_errors: false)
+    def self.api_request(method, path, body: nil, return_errors: false)
       path = "/api/#{ENV['ID_APP_FLEXZEN']}" + path
-      request(method, path, headers: headers, body: body, return_errors: return_errors)
+      request(method, path, body: body, return_errors: return_errors)
     end
 
     def self.base_url

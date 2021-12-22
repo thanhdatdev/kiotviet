@@ -1,2 +1,14 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<table class="index">
+    <thead>
+      <tr>
+        <td>Đồng bộ sản phẩm từ KiotViet đến Flexzen</td>
+        <td>Đồng bộ hoá đơn từ KiotViet đến Flexzen</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td> <%= link_to 'Đồng bộ sản phẩm', synchronizers_products_synchronizer_index_path, class: 'btn btn-primary' %></td>
+        <td> <%= link_to 'Đồng bộ hoá đơn', synchronizers_orders_synchronizer_index_path, class: 'btn btn-primary' %></td>
+      </tr>
+    </tbody>
+  </table>

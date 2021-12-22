@@ -1,5 +1,5 @@
 module Synchronizers
-  class ProductSerializer < BaseSerializer
+  class UnitSerializer < BaseSerializer
     attr_reader :data
 
     def initialize(data)
