@@ -11,14 +11,16 @@ module Synchronizers
 
     private
 
-    def data_serializer(object)
-      data = object["data"]
-      hash = serializer_class_name.constantize.new(data).as_json
+    def get_data_kiotviet
+      response = HTTParty.get(get_data_kiot_path, query: product_params, headers: headers_config)
+      response_hash = response.body.present? ? JSON.parse(response.body.to_s) : { status: response.code }
+      response_hash['data']
     end
 
-    def get_data_kiotviet
-      response = HTTParty.get(get_data_kiot_path, headers: headers_config)
-      response_hash = response.body.present? ? JSON.parse(response.body.to_s) : { status: response.code }
+    def product_params
+      {
+        "pageSize" => 100,
+      }
     end
 
     def get_data_kiot_path

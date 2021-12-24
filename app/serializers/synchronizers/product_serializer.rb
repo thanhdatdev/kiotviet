@@ -9,12 +9,18 @@ module Synchronizers
     def as_json
       hash = []
       data.each do |obj|
+        obj['unit'].blank? ? obj['unit'] ||= 'Cái' : obj['unit']
         hash << {
-          'ma_vt' =>  obj['code'],
+          'ma_vt' =>  obj['code'].to_s,
           'ten_vt' => obj['fullName'],
           'ten_nvt' => obj['categoryName'],
           'gia_ban_le' => obj['basePrice'],
-          'ma_dvt' => obj['unit']
+          "ma_dvt" => obj['unit'],
+          'ma_lvt' => "TP",
+          'tg_tk' =>  true,
+          'tk_vt' => "1561",
+          'tk_dt' => "51112",
+          'tk_gv' => "6321"
         }
       end
       hash

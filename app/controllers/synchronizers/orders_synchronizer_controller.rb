@@ -1,5 +1,5 @@
 module Synchronizers
-  class ProductsSynchronizerController < ApplicationController
+  class OrdersSynchronizerController < ApplicationController
     def index
       Synchronizers::OrdersSynchronizer.call
       flash[:success] = "Orders Synchronizer Successfully"

@@ -12,16 +12,25 @@
                   <h4 class="mt-1 mb-5 pb-1">We are The Zenapp Team</h4>
                 </div>
 
-                <%= form_with(scope: :session, url: kiotviet_oauth2_index_path) do |f| %>
+                <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
                   <p>Please login to your account kiotviet</p>
                   <div class="form-outline mb-4">
-                    <%= f.text_field :client_id, class: "form-control", placeholder: "Your Client ID..." %>
-                    <%= f.label :client_id, 'Client id', class: "form-label" %>
+                    <%= f.label :email, 'Email', class: "form-label" %>
+                    <%= f.email_field :email, class: "form-control", placeholder: "Your Email..." %>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <%= f.text_field :client_serect, class: "form-control", placeholder: "Your Client Serect..." %>
-                    <%= f.label :client_serect, 'Client serect', class: "form-label" %>
+                    <%= f.label :password, 'Password', class: "form-label" %>
+                    <%= f.text_field :password, class: "form-control", placeholder: "Your Password..." %>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <% if devise_mapping.rememberable? %>
+                      <div class="field">
+                        <%= f.check_box :remember_me %>
+                        <%= f.label :remember_me %>
+                      </div>
+                    <% end %>
                   </div>
 
                   <div class="text-center pt-1 mb-5 pb-1">
@@ -42,6 +51,8 @@
     </div>
   </div>
 </section>
+
+
 
 <style>
   .gradient-custom-2 {

@@ -1,7 +1,7 @@
 module Synchronizers
-  class OrdersSynchronizer < BaseSynchronizer
+  class UsersSynchronizer < BaseSynchronizer
 
-    self.serializer_class_name = "::Synchronizers::OrderSerializer"
+    self.serializer_class_name = "::Synchronizers::UserSerializer"
 
     def call
       data = get_data_kiotviet
@@ -11,22 +11,18 @@ module Synchronizers
 
     private
 
-    def data_serializer(object)
-      data = object["data"]
-      hash = serializer_class_name.constantize.new(data).as_json
-    end
-
     def get_data_kiotviet
       response = HTTParty.get(get_data_kiot_path, headers: headers_config)
       response_hash = response.body.present? ? JSON.parse(response.body.to_s) : { status: response.code }
+      response_hash['data']
     end
 
     def get_data_kiot_path
-      "#{ENV['KIOTVIET_API_ENDPOINT']}/invoices"
+      "#{ENV['KIOTVIET_API_ENDPOINT']}/customers"
     end
 
     def path
-      "/#{ENV['FLEXZEN_API_ORDERS']}"
+      "/#{ENV['FLEXZEN_API_PRODUCTS']}"
     end
   end
 end

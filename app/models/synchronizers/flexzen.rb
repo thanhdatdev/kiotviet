@@ -6,15 +6,14 @@ module Synchronizers
       args << { json: body } if body
       response = HTTP.request(*args)
       response_hash = response.body.present? ? JSON.parse(response.body.to_s) : { status: response.code }
-      byebug
+      puts JSON.pretty_generate(JSON.parse(response.body.to_s))
+
       unless (200..299).cover?(response.code)
         return Synchronizers::Error.new(
           request_method: method,
           request_url: url,
           request_body: body,
-
           status: response_hash["status"] || response.code,
-
           response_hash: response_hash
         ).tap { |error| raise error unless return_errors }
       end
@@ -27,7 +26,7 @@ module Synchronizers
     end
 
     def self.api_request(method, path, body: nil, return_errors: false)
-      path = "/api/#{ENV['ID_APP_FLEXZEN']}" + path
+      path = "/api" + path
       request(method, path, body: body, return_errors: return_errors)
     end
 

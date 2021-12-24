@@ -1,14 +1,39 @@
-<table class="index">
-    <thead>
-      <tr>
-        <td>Đồng bộ sản phẩm từ KiotViet đến Flexzen</td>
-        <td>Đồng bộ hoá đơn từ KiotViet đến Flexzen</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td> <%= link_to 'Đồng bộ sản phẩm', synchronizers_products_synchronizer_index_path, class: 'btn btn-primary' %></td>
-        <td> <%= link_to 'Đồng bộ hoá đơn', synchronizers_orders_synchronizer_index_path, class: 'btn btn-primary' %></td>
-      </tr>
-    </tbody>
-  </table>
+<section class="ftco-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center mb-5">
+        <h2 class="heading-section">Table #05</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-wrap">
+          <table class="table table-responsive-xl">
+            <thead>
+              <tr>
+                <th>Đồng bộ hoá đơn từ KiotViet đến Flexzen</th>
+                <th>Đồng bộ hàng hoá từ KiotViet đến Flexzen</th>
+                <th>Đồng bộ khách hàng từ KiotViet đến Flexzen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <%= link_to 'Đòng bộ hoá đơn', synchronizers_orders_synchronizer_index_path, class: 'btn btn-primary', :data => {:id => 'loading_gif'} %>
+                </td>
+
+                <td>
+                  <%= link_to 'Đòng bộ hàng hoá', synchronizers_products_synchronizer_index_path, class: 'btn btn-secondary', :data => {:id => 'loading_gif'} %>
+                </td>
+
+                <td>
+                  <%= link_to 'Đòng bộ khách hàng', synchronizers_users_synchronizer_index_path, class: 'btn btn-success', :data => {:id => 'loading_gif'} %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

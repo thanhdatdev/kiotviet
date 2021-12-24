@@ -6,6 +6,7 @@ module Synchronizers
 
     def initialize(*args)
       @args = args
+      @service = ApiClients::KiotvietClient.call
     end
 
     def call
@@ -13,16 +14,19 @@ module Synchronizers
     end
 
     def sync
-      byebug
       Synchronizers::Flexzen.api_request(:post, @args.last + "/import/json", body: @args.first)
     end
 
     def headers_config
       {
         "Retailer": "Fascom",
-        "Authorization": "Bearer" + " " + "#{ENV['ACCESS_TOKEN']}",
+        "Authorization": "Bearer" + " " + "#{@service.result['access_token']}",
         'Accept-Encoding' => ''
       }
+    end
+
+    def data_serializer(object)
+      hash = serializer_class_name.constantize.new(object).as_json
     end
   end
 end

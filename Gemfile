@@ -74,5 +74,8 @@ end
 
 gem 'http'
 gem "httparty"
-gem 'jsonapi-serializer'
+gem 'jsbundling-rails'
 gem 'cssbundling-rails'
+gem 'jsonapi-serializer'
+gem 'devise'
+gem 'whenever', require: false
