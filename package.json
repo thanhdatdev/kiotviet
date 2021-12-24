@@ -8,9 +8,12 @@
         "esbuild": "^0.14.8",
         "jquery": "^3.6.0",
         "postcss": "^8.4.5",
-        "sass": "^1.45.1"
+        "sass": "^1.45.1",
+        "webpack": "^5.65.0",
+        "webpack-cli": "^4.9.1"
     },
     "scripts": {
-        "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules"
+        "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules",
+        "build": "webpack --config webpack.config.js"
     }
 }
