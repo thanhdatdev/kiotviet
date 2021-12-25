@@ -69,6 +69,8 @@ module Synchronizers
       branch.each do |branchObj|
         ma_kh = branchObj['customerCode'].to_s
         user_hash = query_details_flexzen("#{branchPath}/#{ENV['FLEXZEN_API_ORDERS']}", 'ma_kh', ma_kh)
+        next if user_hash.present?
+
         if user_hash.blank?
           customer_hash = query_details_kiotviet("customers", ma_kh)
           next if customer_hash['code'].blank?
@@ -84,6 +86,8 @@ module Synchronizers
         branchObj['invoiceDetails'].each do |invoice|
           ma_vt = invoice['productCode'].to_s
           product_hash = query_details_flexzen("#{branchPath}/#{ENV['FLEXZEN_API_PRODUCTS']}", 'ma_vt', ma_vt)
+          next if product_hash.present?
+
           if product_hash.blank?
             pro_hash = query_details_kiotviet("Products", ma_vt)
             productArr << pro_hash

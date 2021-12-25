@@ -2,12 +2,19 @@ require_relative "boot"
 
 require "rails/all"
 
+require 'sidekiq/web'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module Kiotviet2
   class Application < Rails::Application
+    config.active_job.queue_adapter = :sidekiq
+
+    Sidekiq::Web.use(Rack::Auth::Basic) do |user, password|
+      [user, password] == ['admin', '123123a1@']
+    end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 

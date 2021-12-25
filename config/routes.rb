@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users, except: %w[sessions#new session#create]
+  devise_for :users, except: %w[sessions#new sessions#create sessions#destroy], controllers: {sessions: "sessions"}
+  mount Sidekiq::Web => '/sidekiq'
   root to: 'home#index'
   namespace :synchronizers do
     resources :products_synchronizer, only: %i[index]

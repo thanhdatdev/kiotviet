@@ -21,14 +21,11 @@
 
 case @environment
 when 'production'
-
-every 1.day, at: ['3:00 am'],  do
-  runner "rails synchronizers:orders_synchronizer"
-end
-
+  every 1.day, at: ['3:00 am'],  do
+    runner "rails synchronizers:orders_synchronizer"
+  end
 when 'development'
-every 1.day, at: ['3:00 am'],  do
-  runner "rails synchronizers:orders_synchronizer"
-end
-
+  every 1.day, at: ['3:00 am'],  do
+    runner "rails synchronizers:orders_synchronizer"
+  end
 end
