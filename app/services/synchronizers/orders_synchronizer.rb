@@ -4,9 +4,20 @@ module Synchronizers
     self.serializer_class_name = "::Synchronizers::OrderSerializer"
 
     def call
-      data = get_data_kiotviet
-      extract_data_zenfaco(data)
-      extract_data_fascom(data)
+      branchZenfaco = []
+      # zenfaco = [164023,164026,58560,63321,63594,63322,63299,58618,63312,63908,63597]
+
+      fascom = [24748,24742,63939,63656]
+      branchFascom = []
+
+      response_hash = get_data_kiotviet
+
+      response_hash['data'].each do |obj|
+        fascom.include?(obj['branchId']) ? branchFascom << obj : branchZenfaco << obj
+      end
+
+      extract_data_zenfaco(branchZenfaco)
+      extract_data_fascom(branchFascom)
     end
 
     private
@@ -18,14 +29,7 @@ module Synchronizers
 
     private
 
-    def extract_data_zenfaco(response_hash)
-      zenfaco = [164023,164026,58560,63321,63594,63322,63299,58618,63312,63908,63597]
-      branchZenfaco = []
-
-      response_hash['data'].each do |obj|
-        branchZenfaco << obj if zenfaco.include?(obj['branchId'])
-      end
-
+    def extract_data_zenfaco(branchZenfaco)
       usersZenfaco = users_result_query(branchZenfaco, ENV['ID_APP_ZENFACO'])
       productsZenfaco = products_result_query(branchZenfaco, ENV['ID_APP_ZENFACO'])
 
@@ -37,14 +41,7 @@ module Synchronizers
       Synchronizers::BaseSynchronizer.call(orders_data_serializer, zenfaco_path)
     end
 
-    def extract_data_fascom(response_hash)
-      fascom = [24748,24742,63939,63656]
-      branchFascom = []
-
-      response_hash['data'].each do |obj|
-        branchFascom << obj if fascom.include?(obj['branchId'])
-      end
-
+    def extract_data_fascom(branchFascom)
       usersFascom = users_result_query(branchFascom, ENV['ID_APP_FASCOM'])
       productsZenFascom = products_result_query(branchFascom, ENV['ID_APP_FASCOM'])
 
