@@ -113,7 +113,8 @@ module Synchronizers
       {
         'includePayment' => true,
         'includeInvoiceDelivery' => true,
-        'SaleChannel' => true
+        'SaleChannel' => true,
+        "pageSize" => 100
       }
     end
 
