@@ -79,4 +79,4 @@ gem 'cssbundling-rails'
 gem 'jsonapi-serializer'
 gem 'devise'
 gem 'whenever', require: false
-gem 'sidekiq'
+gem 'sidekiq', '~> 5.2.9'
