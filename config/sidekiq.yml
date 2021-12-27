@@ -1,12 +1,12 @@
 ---
 :concurrency: 3
 :queues:
-  - kiotviet_development
+  - kiotviet_development_default
 staging:
   :concurrency: 3
   :queues:
-    - kiotviet_staging
+    - kiotviet_staging_default
 production:
   :concurrency: 3
   :queues:
-    - kiotviet_production
+    - kiotviet_production_default
