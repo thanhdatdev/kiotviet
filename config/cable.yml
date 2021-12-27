@@ -5,7 +5,16 @@ development:
 test:
   adapter: test
 
-production:
+# production:
+#   adapter: redis
+#   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+#   channel_prefix: kiotviet2_production
+
+production: &production
   adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  url:  redis://redistogo:314969a81b766a45b5a4d74a24ff5da4@spinyfin.redistogo.com:9156/
+  host: spinyfin.redistogo.com
+  port: 9156
+  inline: true
+  timeout: 1
   channel_prefix: kiotviet2_production
