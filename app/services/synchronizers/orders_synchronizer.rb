@@ -30,26 +30,42 @@ module Synchronizers
     private
 
     def extract_data_zenfaco(branchZenfaco)
-      usersZenfaco = users_result_query(branchZenfaco, ENV['ID_APP_ZENFACO'])
-      productsZenfaco = products_result_query(branchZenfaco, ENV['ID_APP_ZENFACO'])
+      dataImport = []
+      branchZenfaco.each do |zenfaco|
+        response_hash = query_details_flexzen("#{ENV['ID_APP_ZENFACO']}/#{ENV['FLEXZEN_API_ORDERS']}", "so_ct", "#{zenfaco['code']}")
+        if response_hash == []
+          dataImport << zenfaco
+        end
+      end
+
+      usersZenfaco = users_result_query(dataImport, ENV['ID_APP_ZENFACO'])
+      productsZenfaco = products_result_query(dataImport, ENV['ID_APP_ZENFACO'])
 
       user_path = "/#{ENV['ID_APP_ZENFACO']}/#{ENV['FLEXZEN_API_USERS']}"
       product_path = "/#{ENV['ID_APP_ZENFACO']}/#{ENV['FLEXZEN_API_PRODUCTS']}"
       send_data_users_products(usersZenfaco, productsZenfaco, user_path, product_path)
 
-      orders_data_serializer = data_serializer(branchZenfaco)
+      orders_data_serializer = data_serializer(dataImport)
       Synchronizers::BaseSynchronizer.call(orders_data_serializer, zenfaco_path)
     end
 
     def extract_data_fascom(branchFascom)
-      usersFascom = users_result_query(branchFascom, ENV['ID_APP_FASCOM'])
-      productsZenFascom = products_result_query(branchFascom, ENV['ID_APP_FASCOM'])
+      dataImport = []
+      branchFascom.each do |fascom|
+        response_hash = query_details_flexzen("#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_ORDERS']}", "so_ct", "#{fascom['code']}")
+        if response_hash == []
+          dataImport << fascom
+        end
+      end
+
+      usersFascom = users_result_query(dataImport, ENV['ID_APP_FASCOM'])
+      productsZenFascom = products_result_query(dataImport, ENV['ID_APP_FASCOM'])
 
       user_path = "/#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_USERS']}"
       product_path = "/#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_PRODUCTS']}"
       send_data_users_products(usersFascom, productsZenFascom, user_path, product_path)
 
-      orders_data_serializer = data_serializer(branchFascom)
+      orders_data_serializer = data_serializer(dataImport)
       Synchronizers::BaseSynchronizer.call(orders_data_serializer, fascom_path)
     end
 

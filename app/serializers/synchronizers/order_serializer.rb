@@ -9,7 +9,6 @@ module Synchronizers
     def as_json
       hash = []
       data.each do |obj|
-        obj.compact
         invoiceDelivery = obj['invoiceDelivery'].present?
         hash << {
           'so_ct' =>  obj['code'],
