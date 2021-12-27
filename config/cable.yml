@@ -17,4 +17,4 @@ production: &production
   port: 9156
   inline: true
   timeout: 1
-  # channel_prefix: kiotviet2_production
+  channel_prefix: kiotviet_production

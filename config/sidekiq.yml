@@ -1,21 +1,12 @@
 ---
 :concurrency: 3
 :queues:
-  - kiotviet_development_default
-  - kiotviet_development_mailers
-  - kiotviet_development_critical
-  - kiotviet_development_low
+  - kiotviet_development
 staging:
   :concurrency: 3
   :queues:
-    - kiotviet_staging_default
-    - kiotviet_staging_mailers
-    - kiotviet_staging_critical
-    - kiotviet_staging_low
+    - kiotviet_staging
 production:
   :concurrency: 3
   :queues:
-    - kiotviet_production_default
-    - kiotviet_production_mailers
-    - kiotviet_production_critical
-    - kiotviet_production_low
+    - kiotviet_production
