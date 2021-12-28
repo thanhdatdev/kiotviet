@@ -145,6 +145,7 @@ GEM
     minitest (5.15.0)
     msgpack (1.4.2)
     multi_xml (0.6.0)
+    newrelic_rpm (8.2.0)
     nio4r (2.5.8)
     nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
@@ -257,6 +258,7 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   jsonapi-serializer
+  newrelic_rpm
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.0)
