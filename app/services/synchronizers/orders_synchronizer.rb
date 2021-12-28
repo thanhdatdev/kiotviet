@@ -8,7 +8,7 @@ module Synchronizers
       # zenfaco = [164023,164026,58560,63321,63594,63322,63299,58618,63312,63908,63597]
       fascom = [24748,24742,63939,63656]
       branchFascom = []
-      statusValueReject = [2]
+      statusValueReject = [2, 5]
 
       response_hash = get_data_kiotviet
       response_hash['data'].delete_if { |data| statusValueReject.include?(data['status']) }
