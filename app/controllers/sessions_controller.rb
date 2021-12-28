@@ -7,7 +7,6 @@ class SessionsController < Devise::SessionsController
     self.resource = warden.authenticate!(auth_options)
     set_flash_message(:notice, :signed_in) if is_navigational_format?
     sign_in(resource_name, resource)
-    session[:access_token] = ApiClients.KiotvietClient.call.result['access_token']
     if !session[:return_to].blank?
       redirect_to session[:return_to]
       session[:return_to] = nil

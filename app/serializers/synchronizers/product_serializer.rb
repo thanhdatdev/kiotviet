@@ -10,7 +10,7 @@ module Synchronizers
       hash = []
       dvt = 'Cái'
       data.each do |obj|
-        hash << {
+        body = {
           'ma_vt' =>  obj['code'].to_s,
           'ten_vt' => obj['fullName'],
           'ten_nvt' => obj['categoryName'],
@@ -22,9 +22,8 @@ module Synchronizers
           'tk_dt' => "51112",
           'tk_gv' => "6321"
         }
-      end
-      hash.each do |h|
-        h["ma_dvt"] = dvt if h["ma_dvt"] == ""
+        body["ma_dvt"] = dvt if body["ma_dvt"].nil?
+        hash << body
       end
       hash
     end

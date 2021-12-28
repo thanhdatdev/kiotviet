@@ -59,11 +59,11 @@ module Synchronizers
       end
 
       usersFascom = users_result_query(dataImport, ENV['ID_APP_FASCOM'])
-      productsZenFascom = products_result_query(dataImport, ENV['ID_APP_FASCOM'])
+      productsFascom = products_result_query(dataImport, ENV['ID_APP_FASCOM'])
 
       user_path = "/#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_USERS']}"
       product_path = "/#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_PRODUCTS']}"
-      send_data_users_products(usersFascom, productsZenFascom, user_path, product_path)
+      send_data_users_products(usersFascom, productsFascom, user_path, product_path)
 
       orders_data_serializer = data_serializer(dataImport)
       Synchronizers::BaseSynchronizer.call(orders_data_serializer, fascom_path)
@@ -97,10 +97,19 @@ module Synchronizers
       branch.each do |branchObj|
         branchObj['invoiceDetails'].each do |invoice|
           ma_vt = invoice['productCode'].to_s
-          product_hash = query_details_flexzen("#{branchPath}/#{ENV['FLEXZEN_API_PRODUCTS']}", 'ma_vt', ma_vt)
+          unless ma_vt.ascii_only?
+            productArr << {
+              'code' => invoice['productCode'].upcase,
+              'fullName' => invoice['productName'],
+              'unit' =>  "Cái",
+            }
+          else
+            product_hash = query_details_flexzen("#{branchPath}/#{ENV['FLEXZEN_API_PRODUCTS']}", 'ma_vt', ma_vt)
+          end
 
           if product_hash == []
             pro_hash = query_details_kiotviet("Products", ma_vt)
+            next if productArr.include?(pro_hash['productCode'])
             productArr << pro_hash
           end
         end

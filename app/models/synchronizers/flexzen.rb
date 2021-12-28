@@ -7,7 +7,6 @@ module Synchronizers
       response = HTTP.request(*args)
       response_hash = response.body.present? ? JSON.parse(response.body.to_s) : { status: response.code }
       puts JSON.pretty_generate(JSON.parse(response.body.to_s))
-
       unless (200..299).cover?(response.code)
         return Synchronizers::Error.new(
           request_method: method,
