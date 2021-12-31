@@ -81,7 +81,7 @@ module Synchronizers
       userArr = []
       branch.each do |branchObj|
         ma_kh = branchObj['customerCode'].to_s
-        unless ma_vt.ascii_only?
+        unless ma_kh.ascii_only?
           userArr << {
             'code' => branchObj['customerCode'].upcase,
             'name' => branchObj['customerName']
