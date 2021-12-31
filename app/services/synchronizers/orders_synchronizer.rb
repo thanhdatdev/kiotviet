@@ -81,7 +81,14 @@ module Synchronizers
       userArr = []
       branch.each do |branchObj|
         ma_kh = branchObj['customerCode'].to_s
-        user_hash = query_details_flexzen("#{branchPath}/#{ENV['FLEXZEN_API_ORDERS']}", 'ma_kh', ma_kh)
+        unless ma_vt.ascii_only?
+          userArr << {
+            'code' => branchObj['customerCode'].upcase,
+            'name' => branchObj['customerName']
+          }
+        else
+          user_hash = query_details_flexzen("#{branchPath}/#{ENV['FLEXZEN_API_ORDERS']}", 'ma_kh', ma_kh)
+        end
 
         if user_hash == []
           customer_hash = query_details_kiotviet("customers", ma_kh)
