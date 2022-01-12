@@ -25,8 +25,8 @@ module Synchronizers
       }
     end
 
-    def data_serializer(object)
-      hash = serializer_class_name.constantize.new(object).as_json
+    def data_serializer(object, branch)
+      hash = serializer_class_name.constantize.new(object, branch).as_json
     end
   end
 end

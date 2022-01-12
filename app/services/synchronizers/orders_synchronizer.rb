@@ -45,7 +45,7 @@ module Synchronizers
       product_path = "/#{ENV['ID_APP_ZENFACO']}/#{ENV['FLEXZEN_API_PRODUCTS']}"
       send_data_users_products(usersZenfaco, productsZenfaco, user_path, product_path)
 
-      orders_data_serializer = data_serializer(dataImport)
+      orders_data_serializer = data_serializer(dataImport, 'Zenfaco')
       Synchronizers::BaseSynchronizer.call(orders_data_serializer, zenfaco_path)
     end
 
@@ -65,7 +65,7 @@ module Synchronizers
       product_path = "/#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_PRODUCTS']}"
       send_data_users_products(usersFascom, productsFascom, user_path, product_path)
 
-      orders_data_serializer = data_serializer(dataImport)
+      orders_data_serializer = data_serializer(dataImport, 'Fascom')
       Synchronizers::BaseSynchronizer.call(orders_data_serializer, fascom_path)
     end
 
@@ -81,7 +81,7 @@ module Synchronizers
       userArr = []
       branch.each do |branchObj|
         ma_kh = branchObj['customerCode'].to_s
-        unless ma_kh.ascii_only?
+        unless ma_vt.ascii_only?
           userArr << {
             'code' => branchObj['customerCode'].upcase,
             'name' => branchObj['customerName']
