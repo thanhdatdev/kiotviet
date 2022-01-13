@@ -16,7 +16,6 @@ module Synchronizers
             'ngay_ct'=> obj['purchaseDate'],
             'ma_kh' => obj['customerCode'],
             't_tt_nt' => obj['total'],
-            'trang_thai' => 0, #obj['status'],
             'dien_giai' => obj['description'],
             'details' =>
               obj['invoiceDetails']&.map { |invoice|
@@ -51,10 +50,11 @@ module Synchronizers
           hash << default.merge!(
               'pt_thanh_toan' => '61de7a6b5bc1556ae1e34a24',
               'ten_pt_thanh_toan' => 'COD',
-              'nhan_vien_giao_hang' =>  obj['branchId']
+              'nhan_vien_giao_hang' =>  obj['branchId'],
+              'trang_thai' => 8
             )
         when 'Fascom'
-          hash << default
+          hash << default.merge!('trang_thai' => 0)
         end
       end
       hash
