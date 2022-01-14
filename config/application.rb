@@ -16,6 +16,7 @@ module Kiotviet2
       [user, password] == ['admin', '123123a1@']
     end
     # Initialize configuration defaults for originally generated Rails version.
+    config.time_zone = 'Hanoi'
     config.load_defaults 7.0
 
     # Configuration for the application, engines, and railties goes here.

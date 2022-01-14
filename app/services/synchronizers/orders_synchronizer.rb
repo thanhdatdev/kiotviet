@@ -16,11 +16,28 @@ module Synchronizers
         fascom.include?(obj['branchId']) ? branchFascom << obj : branchZenfaco << obj
       end
 
+      # updateAll
       extract_data_zenfaco(branchZenfaco)
       extract_data_fascom(branchFascom)
     end
 
     private
+
+    def updateAll
+      hash = []
+      response = HTTParty.get(flexzen_url("#{ENV['ID_APP_ZENFACO']}/so1"))
+      response_hash = response.body.present? ? JSON.parse(response.body.to_s) : {status: response.code}
+      response_hash = response_hash.filter {|res| res['ten_trang_thai'] == "Chờ xác nhận"}
+      response_hash.each do |res|
+        hash << res.merge!(
+          'pt_thanh_toan' => '61de7a6b5bc1556ae1e34a24',
+          'ten_pt_thanh_toan' => 'COD',
+          'nhan_vien_giao_hang' =>  res['ma_kho'],
+          'trang_thai' => 8
+        )
+      end
+      Synchronizers::BaseSynchronizer.call(hash, zenfaco_path)
+    end
 
     def get_data_kiotviet
       response = HTTParty.get(get_data_kiot_path, query: kiotviet_params, headers: headers_config)
@@ -135,15 +152,15 @@ module Synchronizers
     end
 
     def flexzen_url(path)
-      "#{ENV['FLEXZEN_API_ENDPOINT']}/api/#{path}?access_token=#{ENV['ACCESS_TOKEN_FLEXZEN']}" + "&update=true"
+      "#{ENV['FLEXZEN_API_ENDPOINT']}/api/#{path}?access_token=#{ENV['ACCESS_TOKEN_FLEXZEN']}" + "&update=true&ass=1"
     end
 
     def kiotviet_params
       {
-        'includePayment' => true,
         'includeInvoiceDelivery' => true,
-        'SaleChannel' => true,
-        "pageSize" => 100
+        'pageSize' => 100
+        # 'fromPurchaseDate' => DateTime.new(2022,1,8,0,0,0, '+07:00'),
+        # 'toPurchaseDate' => DateTime.new(2022,1,9,0,0,0, '+07:00')
       }
     end
 
