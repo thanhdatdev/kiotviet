@@ -10,9 +10,15 @@ module Synchronizers
       branchFascom = []
       statusValueReject = [2, 5]
 
-      response_hash = get_data_kiotviet
-      response_hash['data'].delete_if { |data| statusValueReject.include?(data['status']) }
-      response_hash['data'].each do |obj|
+      response_hash = get_data_kiotviet['data']
+
+      ordersZenfaco = HTTParty.get(flexzen_url(zenfaco_path))&.map { |order| order['so_ct'] }
+      ordersFascom = HTTParty.get(flexzen_url(fascom_path))&.map { |order| order['so_ct'] }
+      orders = ordersZenfaco.union(ordersFascom)
+
+      response_hash = response_hash.filter { |data| !orders.include?(data['code'])}
+      response_hash.delete_if { |data| statusValueReject.include?(data['status']) }
+      response_hash.each do |obj|
         fascom.include?(obj['branchId']) ? branchFascom << obj : branchZenfaco << obj
       end
 
@@ -47,42 +53,26 @@ module Synchronizers
     private
 
     def extract_data_zenfaco(branchZenfaco)
-      dataImport = []
-      branchZenfaco.each do |zenfaco|
-        response_hash = query_details_flexzen("#{ENV['ID_APP_ZENFACO']}/#{ENV['FLEXZEN_API_ORDERS']}", "so_ct", "#{zenfaco['code']}")
-        if response_hash == []
-          dataImport << zenfaco
-        end
-      end
-
-      usersZenfaco = users_result_query(dataImport, ENV['ID_APP_ZENFACO'])
-      productsZenfaco = products_result_query(dataImport, ENV['ID_APP_ZENFACO'])
+      usersZenfaco = users_result_query(branchZenfaco, ENV['ID_APP_ZENFACO'])
+      productsZenfaco = products_result_query(branchZenfaco, ENV['ID_APP_ZENFACO'])
 
       user_path = "/#{ENV['ID_APP_ZENFACO']}/#{ENV['FLEXZEN_API_USERS']}"
       product_path = "/#{ENV['ID_APP_ZENFACO']}/#{ENV['FLEXZEN_API_PRODUCTS']}"
       send_data_users_products(usersZenfaco, productsZenfaco, user_path, product_path)
 
-      orders_data_serializer = data_serializer(dataImport, 'Zenfaco')
+      orders_data_serializer = data_serializer(branchZenfaco, 'Zenfaco')
       Synchronizers::BaseSynchronizer.call(orders_data_serializer, zenfaco_path)
     end
 
     def extract_data_fascom(branchFascom)
-      dataImport = []
-      branchFascom.each do |fascom|
-        response_hash = query_details_flexzen("#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_ORDERS']}", "so_ct", "#{fascom['code']}")
-        if response_hash == []
-          dataImport << fascom
-        end
-      end
-
-      usersFascom = users_result_query(dataImport, ENV['ID_APP_FASCOM'])
-      productsFascom = products_result_query(dataImport, ENV['ID_APP_FASCOM'])
+      usersFascom = users_result_query(branchFascom, ENV['ID_APP_FASCOM'])
+      productsFascom = products_result_query(branchFascom, ENV['ID_APP_FASCOM'])
 
       user_path = "/#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_USERS']}"
       product_path = "/#{ENV['ID_APP_FASCOM']}/#{ENV['FLEXZEN_API_PRODUCTS']}"
       send_data_users_products(usersFascom, productsFascom, user_path, product_path)
 
-      orders_data_serializer = data_serializer(dataImport, 'Fascom')
+      orders_data_serializer = data_serializer(branchFascom, 'Fascom')
       Synchronizers::BaseSynchronizer.call(orders_data_serializer, fascom_path)
     end
 
