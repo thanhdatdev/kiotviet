@@ -12,8 +12,8 @@ module Synchronizers
 
       response_hash = get_data_kiotviet['data']
 
-      ordersZenfaco = HTTParty.get(flexzen_url(zenfaco_path))&.map { |order| order['so_ct'] }
-      ordersFascom = HTTParty.get(flexzen_url(fascom_path))&.map { |order| order['so_ct'] }
+      ordersZenfaco = HTTParty.get(flexzen_url(zenfaco_path), query: { 'limit': 100 })&.map { |order| order['so_ct'] }
+      ordersFascom = HTTParty.get(flexzen_url(fascom_path), query: { 'limit': 100 })&.map { |order| order['so_ct'] }
       orders = ordersZenfaco.union(ordersFascom)
 
       response_hash = response_hash.filter { |data| !orders.include?(data['code'])}
@@ -94,10 +94,6 @@ module Synchronizers
             'name' => branchObj['customerName']
           }
         else
-          user_hash = query_details_flexzen("#{branchPath}/#{ENV['FLEXZEN_API_ORDERS']}", 'ma_kh', ma_kh)
-        end
-
-        if user_hash == []
           customer_hash = query_details_kiotviet("customers", ma_kh)
           next if customer_hash['code'].blank?
           userArr << customer_hash
@@ -118,10 +114,6 @@ module Synchronizers
               'unit' =>  "Cái",
             }
           else
-            product_hash = query_details_flexzen("#{branchPath}/#{ENV['FLEXZEN_API_PRODUCTS']}", 'ma_vt', ma_vt)
-          end
-
-          if product_hash == []
             pro_hash = query_details_kiotviet("Products", ma_vt)
             next if productArr.include?(pro_hash['productCode'])
             productArr << pro_hash
@@ -131,10 +123,10 @@ module Synchronizers
       productArr
     end
 
-    def query_details_flexzen(path, query_name, query)
-      response = HTTParty.get(flexzen_url(path), query: {"#{query_name}" => query})
-      response_hash = response.body.present? ? JSON.parse(response.body.to_s) : {status: response.code}
-    end
+    # def query_details_flexzen(path, query_name, query)
+    #   response = HTTParty.get(flexzen_url(path), query: {"#{query_name}" => query})
+    #   response_hash = response.body.present? ? JSON.parse(response.body.to_s) : {status: response.code}
+    # end
 
     def query_details_kiotviet(path, query)
       response = HTTParty.get("#{ENV['KIOTVIET_API_ENDPOINT']}/#{path}/code/#{query}", headers: headers_config)
