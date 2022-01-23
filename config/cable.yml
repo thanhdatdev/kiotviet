@@ -12,9 +12,9 @@ test:
 
 production: &production
   adapter: redis
-  url:  redis://redistogo:314969a81b766a45b5a4d74a24ff5da4@spinyfin.redistogo.com:9156/
-  host: spinyfin.redistogo.com
-  port: 9156
+  url:  redis://redistogo:4955c0f77b02e74e3609fa5148e5409b@sole.redistogo.com:10232/
+  host: sole.redistogo.com
+  port: 10232
   inline: true
   timeout: 1
   channel_prefix: kiotviet2_production
