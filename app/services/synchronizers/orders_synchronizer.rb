@@ -11,9 +11,8 @@ module Synchronizers
       statusValueReject = [2, 5]
 
       response_hash = get_data_kiotviet['data']
-
-      ordersZenfaco = HTTParty.get(flexzen_url(zenfaco_path), query: { 'limit': 100 })&.map { |order| order['so_ct'] }
-      ordersFascom = HTTParty.get(flexzen_url(fascom_path), query: { 'limit': 100 })&.map { |order| order['so_ct'] }
+      ordersZenfaco = HTTParty.get(flexzen_url(zenfaco_path), query: { 'limit': 100 }, timeout: 1000000)&.map { |order| order['so_ct'] }
+      ordersFascom = HTTParty.get(flexzen_url(fascom_path), query: { 'limit': 100 }, timeout: 1000000)&.map { |order| order['so_ct'] }
       orders = ordersZenfaco.union(ordersFascom)
 
       response_hash = response_hash.filter { |data| !orders.include?(data['code'])}
