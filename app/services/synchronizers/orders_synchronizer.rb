@@ -6,6 +6,7 @@ module Synchronizers
     def call
       branchZenfaco = []
       # zenfaco = [164023,164026,58560,63321,63594,63322,63299,58618,63312,63908,63597]
+      inventoriesReject = [24745]
       fascom = [24748,24742,63939,63656]
       branchFascom = []
       statusValueReject = [2, 5]
@@ -16,7 +17,7 @@ module Synchronizers
       orders = ordersZenfaco.union(ordersFascom)
 
       response_hash = response_hash.filter { |data| !orders.include?(data['code'])}
-      response_hash.delete_if { |data| statusValueReject.include?(data['status']) }
+      response_hash.delete_if { |data| statusValueReject.include?(data['status']) || inventoriesReject.include?(data['branchId'])}
       response_hash.each do |obj|
         fascom.include?(obj['branchId']) ? branchFascom << obj : branchZenfaco << obj
       end
