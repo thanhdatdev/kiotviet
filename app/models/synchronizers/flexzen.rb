@@ -34,7 +34,7 @@ module Synchronizers
     end
 
     def self.url(path)
-      base_url + path + "?access_token=#{ENV['ACCESS_TOKEN_FLEXZEN']}" + "&update=true"
+      base_url + path + "?access_token=#{ENV['ACCESS_TOKEN_FLEXZEN']}" + "&update=true&ass=1"
     end
   end
 end
