@@ -7,7 +7,7 @@ module Synchronizers
       branchZenfaco = []
       # zenfaco = [164023,164026,58560,63321,63594,63322,63299,58618,63312,63908,63597]
       inventoriesReject = [24745]
-      fascom = [24748,24742,63939,63656]
+      fascom = [24742,63939,63656]
       branchFascom = []
       statusValueReject = [2, 5]
 
